@@ -47,18 +47,14 @@ app.get("/products", async (req, res) => {
 const checkAndSeedDatabase = async () => {
   try {
     console.log('Проверка существования таблицы Products...');
-    const tableExists = await sequelize.getQueryInterface().showAllTables()
-      .then(tables => tables.includes('Products'));
     
-    if (!tableExists) {
-      console.log('Таблица Products не существует, создаём...');
-      await sequelize.sync({ force: true });
-      console.log('Таблица Products создана');
-    }
+    // Синхронизируем модели 
+    await sequelize.sync();
+    console.log('Модели синхронизированы');
 
     // Проверяем количество записей в базе
     const count = await Product.count();
-    console.log(`Количество записей в базе: ${count}`);
+    console.log(`Количество записей в таблице Products: ${count}`);
     
     // Если база пустая, заполняем её начальными данными
     if (count === 0) {

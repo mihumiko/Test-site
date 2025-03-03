@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
+import PersonIcon from "@mui/icons-material/Person";
 import MenuIcon from "@mui/icons-material/Menu";
 export default function NavBar() {
   return (
@@ -46,6 +47,14 @@ export default function NavBar() {
           sx={{ marginLeft: "auto" }}
         >
           <ShoppingBagIcon />
+        </IconButton>
+        <IconButton
+          component={Link}
+          to="/authorization"
+          color="inherit"
+          sx={{ marginLeft: "auto" }}
+        >
+          <PersonIcon />
         </IconButton>
       </Toolbar>
     </AppBar>

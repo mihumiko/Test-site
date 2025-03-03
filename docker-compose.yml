@@ -4,13 +4,18 @@ services:
   frontend:
     build:
       context: ./test-react-app
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     ports:
       - "3000:3000"
+    volumes:
+      - ./test-react-app:/app
+      - /app/node_modules
     depends_on:
       - backend
     environment:
       - VITE_API_URL=http://backend:5000
+    stdin_open: true
+    tty: true
 
   backend:
     build:
@@ -18,6 +23,9 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5000:5000"
+    volumes:
+      - ./Test-server:/app
+      - /app/node_modules
     depends_on:
       - db
     environment:

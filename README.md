@@ -23,6 +23,12 @@ cd Test-site
 docker-compose up -d
 ```
 
+3. Загрузка базы данных(начальные значения):
+
+```bash
+docker-compose exec backend node sync.js
+```
+
 ## Доступ к приложению
 
 - Frontend: http://localhost:3000

@@ -1,7 +1,6 @@
 module.exports = (HOST) => {
   const products = [
     {
-      id: 1,
       name: "Маргарита",
       image: `${HOST}/assets/margarita.jpg`,
       description:
@@ -15,7 +14,6 @@ module.exports = (HOST) => {
       ],
     },
     {
-      id: 2,
       name: "Пеперони",
       image: `${HOST}/assets/peperoni.jpg`,
       description:
@@ -29,7 +27,6 @@ module.exports = (HOST) => {
       ],
     },
     {
-      id: 3,
       name: "4 сыра",
       image: `${HOST}/assets/4sira.jpg`,
       description:
@@ -44,7 +41,6 @@ module.exports = (HOST) => {
       ],
     },
     {
-      id: 4,
       name: "Гавайская",
       image: `${HOST}/assets/gavai.jpg`,
       description:
