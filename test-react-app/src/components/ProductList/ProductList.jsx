@@ -47,7 +47,7 @@ export default function ProductList() {
   return (
     <Box
       sx={{
-        maxWidth: "70vw",
+        maxWidth: "80vw",
         width: "100%",
         margin: "0 auto",
       }}
@@ -73,7 +73,7 @@ export default function ProductList() {
               <CardActionArea component={Link} to={`/product/${product.id}`}>
                 <CardMedia
                   component="img"
-                  height="250"
+                  height="175"
                   image={product.image}
                   alt={product.name}
                   sx={{
