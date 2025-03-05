@@ -13,9 +13,12 @@ import { useState } from "react";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useNavigate } from "react-router-dom";
+import { login as loginApi, register as registerApi } from "../../api/auth";
+import { useAuth } from "../../context/AuthContext";
 
 export default function AuthForm() {
   const navigate = useNavigate();
+  const { login: authLogin } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
@@ -24,6 +27,7 @@ export default function AuthForm() {
     name: "",
   });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -35,19 +39,25 @@ export default function AuthForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     try {
+      let data;
       if (isLogin) {
-        // Здесь будет логика входа
-        console.log("Login:", formData);
-        navigate("/");
+        data = await loginApi({
+          email: formData.email,
+          password: formData.password,
+        });
       } else {
-        // Здесь будет логика регистрации
-        console.log("Register:", formData);
-        setIsLogin(true);
+        data = await registerApi(formData);
       }
+
+      authLogin(data.user, data.token);
+      navigate("/");
     } catch (err) {
       setError(err.message || "Произошла ошибка");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -94,6 +104,7 @@ export default function AuthForm() {
                 autoFocus
                 value={formData.name}
                 onChange={handleChange}
+                disabled={loading}
               />
             )}
             <TextField
@@ -107,6 +118,7 @@ export default function AuthForm() {
               autoFocus={isLogin}
               value={formData.email}
               onChange={handleChange}
+              disabled={loading}
             />
             <TextField
               margin="normal"
@@ -119,6 +131,7 @@ export default function AuthForm() {
               autoComplete="current-password"
               value={formData.password}
               onChange={handleChange}
+              disabled={loading}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -138,13 +151,19 @@ export default function AuthForm() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              disabled={loading}
             >
-              {isLogin ? "Войти" : "Зарегистрироваться"}
+              {loading
+                ? "Загрузка..."
+                : isLogin
+                ? "Войти"
+                : "Зарегистрироваться"}
             </Button>
             <Button
               fullWidth
               variant="text"
               onClick={() => setIsLogin(!isLogin)}
+              disabled={loading}
             >
               {isLogin
                 ? "Нет аккаунта? Зарегистрироваться"
