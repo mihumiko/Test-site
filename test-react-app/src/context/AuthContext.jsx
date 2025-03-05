@@ -6,7 +6,10 @@ const AuthContext = createContext(null);
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -18,8 +21,6 @@ export const AuthProvider = ({ children }) => {
           setUser(data.user);
         } catch (error) {
           console.error("Ошибка при инициализации auth:", error);
-          localStorage.removeItem("token");
-          localStorage.removeItem("user");
         }
       }
       setLoading(false);

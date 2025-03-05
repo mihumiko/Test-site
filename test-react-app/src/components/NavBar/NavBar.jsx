@@ -35,7 +35,7 @@ export default function NavBar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ backgroundColor: "primary.main" }}>
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         <IconButton color="inherit">
           <MenuIcon />
