@@ -37,11 +37,6 @@ export const checkAuth = async () => {
   try {
     const token = localStorage.getItem("token");
     if (!token) {
-      // Если нет токена, но есть сохраненный пользователь, используем его
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) {
-        return { user: JSON.parse(storedUser) };
-      }
       throw new Error("Нет токена авторизации");
     }
 
@@ -54,24 +49,13 @@ export const checkAuth = async () => {
 
     const data = await response.json();
 
-    // Если сервер вернул ошибку, но у нас есть сохраненный пользователь,
-    // возвращаем сохраненные данные
     if (!response.ok) {
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) {
-        return { user: JSON.parse(storedUser) };
-      }
       throw new Error(data.message || "Ошибка при проверке авторизации");
     }
 
     return data;
   } catch (error) {
     console.error("Ошибка в checkAuth:", error);
-    // Пробуем использовать сохраненного пользователя даже при ошибке
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      return { user: JSON.parse(storedUser) };
-    }
     throw error;
   }
 };

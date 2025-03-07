@@ -11,6 +11,13 @@ const Product = sequelize.define('Product', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    price: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+        validate: {
+            min: 0
+        }
+    },
     image: {
         type: DataTypes.STRING,
         allowNull: false
@@ -25,7 +32,17 @@ const Product = sequelize.define('Product', {
     }
 }, {
     tableName: 'products',
-    timestamps: false
+    timestamps: true
 });
+
+// Экспортируем функцию синхронизации отдельно
+module.exports.syncProduct = async () => {
+    try {
+        await Product.sync({ alter: true });
+        console.log('Таблица Product успешно создана или обновлена');
+    } catch (error) {
+        console.error('Ошибка при создании/обновлении таблицы Product:', error);
+    }
+};
 
 module.exports = Product; 

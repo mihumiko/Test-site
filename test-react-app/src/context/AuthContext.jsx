@@ -6,33 +6,46 @@ const AuthContext = createContext(null);
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(() => {
-    const storedUser = localStorage.getItem("user");
-    return storedUser ? JSON.parse(storedUser) : null;
-  });
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const checkAuthStatus = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setUser(null);
+      return false;
+    }
+
+    try {
+      const data = await checkAuth();
+      setUser(data.user);
+      return true;
+    } catch (error) {
+      console.error("Ошибка при проверке авторизации:", error);
+      if (
+        error.message === "Токен истек" ||
+        error.message === "Не авторизован"
+      ) {
+        console.log(
+          "Токен истек или недействителен, выполняем выход из системы"
+        );
+        logout();
+      }
+      return false;
+    }
+  };
 
   useEffect(() => {
     const initAuth = async () => {
-      const token = localStorage.getItem("token");
-      const storedUser = localStorage.getItem("user");
-
-      if (storedUser && !user) {
-        setUser(JSON.parse(storedUser));
-      }
-
-      if (token) {
-        try {
-          const data = await checkAuth();
-          setUser(data.user);
-        } catch (error) {
-          console.error("Ошибка при инициализации auth:", error);
-        }
-      }
+      await checkAuthStatus();
       setLoading(false);
     };
 
     initAuth();
+
+    const interval = setInterval(checkAuthStatus, 5000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const login = (userData, token) => {
@@ -53,6 +66,7 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     isAuthenticated: !!user,
+    checkAuth: checkAuthStatus,
   };
 
   return (

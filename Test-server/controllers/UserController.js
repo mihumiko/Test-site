@@ -121,12 +121,6 @@ class UserController {
     try {
       console.log("Проверка токена для пользователя:", req.user.id);
 
-      const token = jwt.sign(
-        { id: req.user.id, email: req.user.email, role: req.user.role },
-        UserController.JWT_SECRET,
-        { expiresIn: UserController.TOKEN_EXPIRATION }
-      );
-
       const user = await User.findByPk(req.user.id);
       console.log("Пользователь найден:", user ? "да" : "нет");
 
@@ -135,7 +129,6 @@ class UserController {
       }
 
       return res.json({
-        token,
         user: {
           id: user.id,
           email: user.email,

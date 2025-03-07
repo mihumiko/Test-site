@@ -1,6 +1,6 @@
-# Пиццерия Test-site
+# Test-site
 
-Проект веб-приложения для пиццерии, состоящий из React-фронтенда и Node.js бэкенда с базой данных PostgreSQL.
+Проект веб-приложения, состоящий из React-фронтенда и Node.js бэкенда с базой данных PostgreSQL.
 
 ## Предварительные требования
 
@@ -23,10 +23,11 @@ cd Test-site
 docker-compose up -d
 ```
 
-3. Загрузка базы данных(начальные значения):
+3. Загрузка базы данных(начальные значения) и первого админа:
 
 ```bash
 docker-compose exec backend node sync.js
+docker-compose exec backend node scripts/NewAdminCreation.js
 ```
 
 ## Доступ к приложению

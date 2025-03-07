@@ -13,17 +13,7 @@ export default function RoutesList() {
             <Route
               key={route.path}
               path={route.path}
-              element={
-                route.protected ? (
-                  <ProtectedRoute>
-                    {Component ? <Component /> : <h1>Компонент не найден</h1>}
-                  </ProtectedRoute>
-                ) : Component ? (
-                  <Component />
-                ) : (
-                  <h1>Компонент не найден</h1>
-                )
-              }
+              element={Component ? <Component /> : <h1>Компонент не найден</h1>}
             />
           );
         })}

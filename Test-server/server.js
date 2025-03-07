@@ -12,9 +12,9 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 app.use("/assets", express.static(path.join(__dirname, "./assets")));
+app.use("/static", express.static("static"));
 app.use("/", router);
 
-// Обработка ошибок, последний Middleware
 app.use(errorHandler);
 
 const start = async () => {

@@ -24,18 +24,23 @@ const User = sequelize.define('User', {
         allowNull: false
     },
     role: {
-        type: DataTypes.STRING,
-        defaultValue: 'USER'
+        type: DataTypes.ENUM('USER', 'ADMIN'),
+        defaultValue: 'USER',
+        allowNull: false
     }
+}, {
+    timestamps: true,
+    tableName: 'Users'
 });
 
-// Синхронизация модели с базой данных
-User.sync()
-    .then(() => {
-        console.log('Таблица User успешно создана или уже существует');
-    })
-    .catch(error => {
-        console.error('Ошибка при создании таблицы User:', error);
-    });
-
 module.exports = User;
+
+// Экспортируем функцию синхронизации отдельно
+module.exports.syncUser = async () => {
+    try {
+        await User.sync({ alter: true });
+        console.log('Таблица User успешно создана или обновлена');
+    } catch (error) {
+        console.error('Ошибка при создании/обновлении таблицы User:', error);
+    }
+};

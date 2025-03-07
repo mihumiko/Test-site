@@ -13,12 +13,24 @@ import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import PersonIcon from "@mui/icons-material/Person";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useAuth } from "../../context/AuthContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function NavBar() {
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, user, logout, checkAuth } = useAuth();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      const interval = setInterval(() => {
+        checkAuth().catch((error) => {
+          console.error("Auth check failed:", error);
+        });
+      }, 60000);
+
+      return () => clearInterval(interval);
+    }
+  }, [isAuthenticated, checkAuth]);
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);

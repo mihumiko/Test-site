@@ -17,6 +17,7 @@ export default function ProductList() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [adminMode, setAdminMode] = useState(false);
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -69,43 +70,58 @@ export default function ProductList() {
             display="flex"
             justifyContent="center"
           >
-            <Card sx={{ backgroundColor: "transparent" }}>
+            <Card sx={{ backgroundColor: "transparent", width: "260px" }}>
               <CardActionArea component={Link} to={`/product/${product.id}`}>
                 <CardMedia
                   component="img"
                   height="175"
-                  image={product.image}
+                  image={`http://localhost:5000/static/${product.image}`}
                   alt={product.name}
                   sx={{
                     borderRadius: "8px 8px 0 0",
                     objectFit: "cover",
+                    width: "260px",
                   }}
                 />
               </CardActionArea>
               <CardContent
                 sx={{
                   display: "flex",
+                  flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "space-between",
                 }}
               >
                 <Typography variant="h6">{product.name}</Typography>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  size="large"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    console.log("Добавлено в корзину", product.name);
-                  }}
+                <Box
                   sx={{
-                    marginLeft: "auto",
-
-                    whiteSpace: "nowrap",
+                    display: "flex",
+                    alignItems: "center",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    marginRight: "10px",
                   }}
                 >
-                  Добавить
-                </Button>
+                  <Typography variant="h6" sx={{ padding: 2 }}>
+                    {product.price + "₽"}
+                  </Typography>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    size="large"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      console.log("Добавлено в корзину", product.name);
+                    }}
+                    sx={{
+                      marginLeft: "auto",
+
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    Добавить
+                  </Button>
+                </Box>
               </CardContent>
             </Card>
           </Grid2>

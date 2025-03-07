@@ -63,7 +63,7 @@ export default function ProductPage() {
         }}
       >
         <img
-          src={product.image}
+          src={`http://localhost:5000/static/${product.image}`}
           alt={product.name}
           style={{
             maxWidth: "100%",
